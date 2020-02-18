@@ -1,0 +1,38 @@
+Epoch 27
+Training =>
+[ 2  3  3 ... 27 27 27]
+[ 2  3  3 ... 27 27 27]
+food_acc:0.9948738170347003
+joint_acc:0.9948738170347003
+[ 0  0  0 ... 40 40 40]
+[ 0  0  0 ... 40 40 40]
+test_food_acc:0.9125151883353585
+test_joint_acc:0.9125151883353585
+Epoch 28
+Training =>
+[ 2  3  3 ... 27 27 27]
+[ 2  3  3 ... 27 27 27]
+food_acc:0.9956624605678234
+joint_acc:0.9956624605678234
+[ 0  0  0 ... 40 40 40]
+[ 0  0  0 ... 40 40 40]
+test_food_acc:0.9094775212636695
+test_joint_acc:0.9094775212636695
+Epoch 29
+Training =>
+
+sent_input = Input(shape=(None,), name='main_in')
+x = Embedding(output_dim=300, input_dim=n_vocab)(sent_input)
+lstm_out = Bidirectional(LSTM(units=150, return_sequences=False))(x)
+lstm_out = Dense(150, activation='relu',name='lstm_out')(lstm_out)
+
+bs_input_food = Input(shape=(food_nb_classes,), name='bs_in_food')
+bs_input_area = Input(shape=(area_nb_classes,), name='bs_in_area')
+bs_input_price = Input(shape=(price_nb_classes,), name='bs_in_price')
+
+
+bs_out_food_joined = concatenate([lstm_out, bs_input_food])
+bs_out_food_joined = Dense(food_nb_classes, activation='relu')(bs_out_food_joined)
+bs_out_food_joined = Dense(food_nb_classes, activation='relu')(bs_out_food_joined)
+bs_out_food_joined = Dense(food_nb_classes, activation='softmax', name='main_out')(bs_out_food_joined)
+
